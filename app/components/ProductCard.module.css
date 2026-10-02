@@ -1,0 +1,66 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: var(--g6);
+  overflow: hidden;
+  border-radius: var(--radius) var(--radius) 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--g4);
+  font-size: 0.78rem;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s;
+}
+
+.card:hover .thumb img {
+  transform: scale(1.04);
+}
+
+.body {
+  padding: 0.9rem 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1;
+}
+
+.category {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--g3);
+}
+
+.name {
+  font-weight: 700;
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.price {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  font-weight: 700;
+  color: var(--g2);
+  font-size: 1.1rem;
+}
+
+.outOfStock {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #B3362C;
+}
