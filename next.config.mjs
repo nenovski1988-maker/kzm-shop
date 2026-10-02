@@ -1,3 +1,5 @@
+const isDev = process.env.NODE_ENV !== 'production';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -19,7 +21,10 @@ const nextConfig = {
             value: [
               "default-src 'self'",
               "img-src 'self' data: https://res.cloudinary.com",
-              "script-src 'self' 'unsafe-inline'",
+              // 'unsafe-eval' is only needed in dev — React/Turbopack's dev-mode
+              // debugging (hot reload, stack reconstruction) calls eval(). Never
+              // added in production, where React never calls eval() anyway.
+              `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}`,
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
               "connect-src 'self' https://*.supabase.co https://api.cloudinary.com",
