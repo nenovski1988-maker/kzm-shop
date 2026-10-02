@@ -1,7 +1,12 @@
+'use client';
+
 import Link from 'next/link';
+import { useCart } from '../lib/cartContext';
 import styles from './Header.module.css';
 
 export default function Header() {
+  const { totalCount } = useCart();
+
   return (
     <header className={styles.header}>
       <div className={styles.bar}>
@@ -17,7 +22,7 @@ export default function Header() {
           <a href="https://kzm.bg" className={styles.siteLink}>← Основен сайт</a>
           <Link href="/cart" className={styles.cart} aria-label="Кошница">
             🛒
-            {/* TODO (Задача 5): жив брой артикули от CartContext */}
+            {totalCount > 0 && <span className={styles.cartCount}>{totalCount}</span>}
           </Link>
         </nav>
       </div>

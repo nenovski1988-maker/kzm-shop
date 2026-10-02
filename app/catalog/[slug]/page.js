@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { supabasePublic } from '../../lib/supabasePublic';
 import { formatPriceEur } from '../../components/ProductCard';
 import ProductGallery from './ProductGallery';
+import AddToCartButton from './AddToCartButton';
 import styles from './product.module.css';
 
 // force-dynamic — виж бележката в app/catalog/page.js
@@ -69,10 +70,7 @@ export default async function ProductDetailPage({ params }) {
 
           {product.description && <p className={styles.description}>{product.description}</p>}
 
-          <button type="button" className="btn btn-primary" disabled>
-            Добави в количката
-          </button>
-          <div className={styles.cartNote}>Онлайн поръчки идват съвсем скоро.</div>
+          <AddToCartButton product={product} />
         </div>
       </div>
     </div>
