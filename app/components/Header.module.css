@@ -1,0 +1,74 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--w);
+  border-bottom: 1px solid var(--g6);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--g1);
+}
+
+.brandMark {
+  font-weight: 700;
+  color: var(--g3);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.nav a {
+  color: var(--ink);
+}
+.nav a:hover { color: var(--g2); }
+
+.siteLink {
+  font-size: 0.75rem;
+  color: var(--g3) !important;
+  border: 1.5px solid var(--g5);
+  border-radius: 7px;
+  padding: 0.45rem 0.8rem;
+}
+.siteLink:hover { background: var(--g6); }
+
+.cart {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 700;
+}
+
+.cartCount {
+  background: var(--g2);
+  color: var(--w);
+  font-size: 0.7rem;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
