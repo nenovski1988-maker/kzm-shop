@@ -19,11 +19,31 @@ html { scroll-behavior: smooth; }
   --radius: 10px;
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
   font-family: Verdana, Geneva, sans-serif;
   background: var(--off);
   color: var(--ink);
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* Бледо зелено лого-водно знак на фона на всяка страница — прозрачността
+     е вече вградена в самия файл (public/logo-watermark.png), не е CSS
+     opacity, за да не избледнява и съдържанието над него. */
+  background-image: url('/logo-watermark.png');
+  background-repeat: no-repeat;
+  background-position: center 10%;
+  background-size: min(480px, 70vw);
+  background-attachment: fixed;
+}
+
+/* Държи footer-а долу дори при кратко съдържание на страницата — main
+   поема цялото останало място, footer-ът се избутва на дъното. */
+body > main {
+  flex: 1 0 auto;
 }
 
 h1, h2, h3, .font-display {
