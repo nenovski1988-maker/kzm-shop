@@ -10,7 +10,7 @@ import '@fontsource/cormorant-garamond/cyrillic-600.css';
 import '@fontsource/cormorant-garamond/cyrillic-700.css';
 import '@fontsource/cormorant-garamond/cyrillic-300-italic.css';
 import '@fontsource/cormorant-garamond/cyrillic-600-italic.css';
-import './globals.css';
+import '../globals.css';
 import { CartProvider } from './lib/cartContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
