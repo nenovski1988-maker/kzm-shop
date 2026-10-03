@@ -21,6 +21,18 @@ export default function CartView() {
     getLiveStock(productIdsKey.split(',')).then(setLiveStock);
   }, [loaded, productIdsKey]);
 
+  // Ако количеството в количката вече е НАД реалната наличност (напр. куплен
+  // е още преди тя да спадне, или е останало от по-стар тест), веднага го
+  // сваля до наличния брой — не само блокира "+" за в бъдеще.
+  useEffect(() => {
+    items.forEach((item) => {
+      const max = liveStock[item.productId];
+      if (max != null && item.qty > max) {
+        updateQty(item.productId, max);
+      }
+    });
+  }, [liveStock, items, updateQty]);
+
   if (!loaded) return null; // избягва "мигане" преди localStorage да се зареди
 
   if (items.length === 0) {
