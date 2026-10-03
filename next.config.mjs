@@ -39,8 +39,10 @@ const nextConfig = {
         // /cart и /checkout четат localStorage + винаги трябва прясна проверка
         // на наличността — изрично забраняваме на Vercel/CDN да ги кешира,
         // независимо от Next.js-овата си класификация (видяхме стар кеширан
-        // HTML да се сервира и след нов деплой, маркиран dynamic).
-        source: '/(cart|checkout)',
+        // HTML да се сервира и след нов деплой, маркиран dynamic). Групата
+        // трябва да е прикачена към именован параметър (:path(...)), иначе
+        // next.config headers() я игнорира безшумно.
+        source: '/:path(cart|checkout)',
         headers: [
           { key: 'Cache-Control', value: 'no-store, must-revalidate' },
         ],
