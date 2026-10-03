@@ -1,0 +1,82 @@
+.empty {
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  color: var(--g3);
+  border: 1.5px dashed var(--g5);
+  border-radius: 10px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--w);
+  border: 1px solid var(--g6);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.table th {
+  text-align: left;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--g3);
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--g6);
+}
+
+.table td {
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid var(--g6);
+  font-size: 0.88rem;
+  vertical-align: middle;
+}
+
+.table tr:last-child td { border-bottom: none; }
+
+.name {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.sku {
+  font-size: 0.76rem;
+  color: var(--g3);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.input {
+  width: 72px;
+  padding: 0.4rem 0.5rem;
+  border: 1.5px solid var(--g5);
+  border-radius: 6px;
+  font-size: 0.88rem;
+  text-align: center;
+}
+
+.saveBtn {
+  font-size: 0.78rem;
+  padding: 0.4rem 0.7rem;
+}
+
+.saved {
+  color: var(--g2);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.lowBadge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: #FDEDEC;
+  color: #B3362C;
+  margin-left: 0.4rem;
+}
