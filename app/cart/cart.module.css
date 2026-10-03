@@ -70,42 +70,11 @@
   color: var(--g3);
 }
 
-.qtyControls {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.qtyBtn {
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  border: 1.5px solid var(--g5);
-  background: var(--w);
-  cursor: pointer;
-  font-weight: 700;
-  color: var(--g2);
-}
-
-.qtyBtn:hover { background: var(--g6); }
-
-.qtyBtn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  background: var(--g6);
-}
-
-.qtyValue {
-  width: 24px;
+.qtyFixed {
+  width: 48px;
   text-align: center;
   font-weight: 700;
-}
-
-.stockNote {
-  font-size: 0.7rem;
-  color: #B3362C;
-  white-space: nowrap;
-  margin-left: 0.2rem;
+  color: var(--g2);
 }
 
 .lineTotal {
