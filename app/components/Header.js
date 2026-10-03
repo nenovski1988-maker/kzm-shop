@@ -1,11 +1,17 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useCart } from '../lib/cartContext';
 import styles from './Header.module.css';
 
 export default function Header() {
   const { totalCount } = useCart();
+  const pathname = usePathname();
+
+  // Завесата (/coming-soon) трябва да изглежда напълно самостоятелна —
+  // без навигация, която издава, че витрината вече съществува.
+  if (pathname === '/coming-soon') return null;
 
   return (
     <header className={styles.header}>
