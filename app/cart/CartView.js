@@ -1,12 +1,25 @@
 'use client';
 
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useCart } from '../lib/cartContext';
 import { formatPriceEur } from '../components/ProductCard';
+import { getLiveStock } from './actions';
 import styles from './cart.module.css';
 
 export default function CartView() {
   const { items, loaded, updateQty, removeItem, totalCents } = useCart();
+  const [liveStock, setLiveStock] = useState({});
+
+  const productIdsKey = useMemo(() => items.map((i) => i.productId).join(','), [items]);
+
+  // Винаги дърпа актуалната наличност при отваряне на количката — не разчита
+  // само на "снимката", взета в момента на добавяне (която може да е
+  // остаряла или да липсва за по-стари артикули в localStorage).
+  useEffect(() => {
+    if (!loaded || !productIdsKey) return;
+    getLiveStock(productIdsKey.split(',')).then(setLiveStock);
+  }, [loaded, productIdsKey]);
 
   if (!loaded) return null; // избягва "мигане" преди localStorage да се зареди
 
@@ -29,7 +42,12 @@ export default function CartView() {
       <h1>Кошница</h1>
 
       <div className={styles.list}>
-        {items.map((item) => (
+        {items.map((item) => {
+          // Приоритет: жива наличност от сървъра (liveStock) → снимката,
+          // записана при добавяне (item.stockQty) → неограничено, докато се зареди.
+          const maxQty = liveStock[item.productId] ?? item.stockQty ?? Infinity;
+          const atMax = item.qty >= maxQty;
+          return (
           <div className={styles.row} key={item.productId}>
             <div className={styles.thumb}>
               {item.image ? (
@@ -56,14 +74,14 @@ export default function CartView() {
               <button
                 type="button"
                 className={styles.qtyBtn}
-                onClick={() => updateQty(item.productId, item.qty + 1)}
-                disabled={item.qty >= (item.stockQty ?? Infinity)}
+                onClick={() => updateQty(item.productId, Math.min(item.qty + 1, maxQty))}
+                disabled={atMax}
                 aria-label="Увеличи количеството"
               >
                 +
               </button>
-              {item.stockQty != null && item.qty >= item.stockQty && (
-                <span className={styles.stockNote}>налични {item.stockQty} бр.</span>
+              {Number.isFinite(maxQty) && atMax && (
+                <span className={styles.stockNote}>налични {maxQty} бр.</span>
               )}
             </div>
             <div className={styles.lineTotal}>{formatPriceEur(item.priceCents * item.qty)}</div>
@@ -76,7 +94,8 @@ export default function CartView() {
               ×
             </button>
           </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className={styles.summary}>
