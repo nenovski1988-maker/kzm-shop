@@ -61,10 +61,15 @@ export default function CheckoutForm() {
         { name, phone, email, deliveryMethod, courier, address, city, office, notes },
         items.map((i) => ({ productId: i.productId, name: i.name, priceCents: i.priceCents, qty: i.qty }))
       );
+      if (!res.success) {
+        setError(res.message || 'Нещо се обърка при изпращането на поръчката.');
+        setSaving(false);
+        return;
+      }
       setResult(res);
       clearCart();
     } catch (err) {
-      setError(err.message || 'Нещо се обърка при изпращането на поръчката.');
+      setError('Възникна неочаквана грешка. Опитай отново.');
       setSaving(false);
     }
   }
