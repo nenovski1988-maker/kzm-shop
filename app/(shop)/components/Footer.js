@@ -13,6 +13,15 @@ export default function Footer() {
         </nav>
         <div className={styles.copy}>© {new Date().getFullYear()} КЗМ ЕООД</div>
       </div>
+      <a
+        href="https://hrumstudio.online"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={styles.credit}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        Създадено от <img src="/hrum-logo.png" alt="HRUM STUDIO" />
+      </a>
     </footer>
   );
 }

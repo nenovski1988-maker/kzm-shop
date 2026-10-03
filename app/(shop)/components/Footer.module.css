@@ -34,3 +34,19 @@
   font-size: 0.72rem;
   color: rgba(255, 255, 255, 0.4);
 }
+
+.credit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.35);
+  text-decoration: none;
+}
+.credit:hover { color: rgba(255, 255, 255, 0.6); }
+.credit img { height: 16px; width: auto; object-fit: contain; }
