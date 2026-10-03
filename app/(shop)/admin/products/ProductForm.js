@@ -12,11 +12,13 @@ export default function ProductForm({ product }) {
   const isEdit = Boolean(product);
 
   const [name, setName] = useState(product?.name ?? '');
+  const [nameEn, setNameEn] = useState(product?.name_en ?? '');
   const [slug, setSlug] = useState(product?.slug ?? '');
   const [slugTouched, setSlugTouched] = useState(isEdit);
   const [sku, setSku] = useState(product?.sku ?? '');
   const [category, setCategory] = useState(product?.category ?? '');
   const [description, setDescription] = useState(product?.description ?? '');
+  const [descriptionEn, setDescriptionEn] = useState(product?.description_en ?? '');
   const [priceEur, setPriceEur] = useState(
     product ? (product.price_cents / 100).toFixed(2) : ''
   );
@@ -58,7 +60,10 @@ export default function ProductForm({ product }) {
     setError('');
     setSaving(true);
 
-    const payload = { name, slug, sku, category, description, priceEur, stockQty, active, images };
+    const payload = {
+      name, nameEn, slug, sku, category, description, descriptionEn,
+      priceEur, stockQty, active, images,
+    };
 
     try {
       if (isEdit) {
@@ -100,6 +105,17 @@ export default function ProductForm({ product }) {
           onChange={(e) => handleNameChange(e.target.value)}
           required
         />
+      </div>
+
+      <div className={styles.field}>
+        <label htmlFor="nameEn">Име на продукта (EN)</label>
+        <input
+          id="nameEn"
+          type="text"
+          value={nameEn}
+          onChange={(e) => setNameEn(e.target.value)}
+        />
+        <span className={styles.hint}>По избор — ако е празно, английската версия на сайта показва българското име.</span>
       </div>
 
       <div className={styles.field}>
@@ -162,6 +178,17 @@ export default function ProductForm({ product }) {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
+      </div>
+
+      <div className={styles.field}>
+        <label htmlFor="descriptionEn">Описание (EN)</label>
+        <textarea
+          id="descriptionEn"
+          rows={5}
+          value={descriptionEn}
+          onChange={(e) => setDescriptionEn(e.target.value)}
+        />
+        <span className={styles.hint}>По избор — ако е празно, английската версия показва българското описание.</span>
       </div>
 
       <div className={styles.field}>

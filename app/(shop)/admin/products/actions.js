@@ -16,9 +16,11 @@ function normalizeProductInput(data) {
 
   return {
     name: data.name.trim(),
+    name_en: data.nameEn?.trim() || null,
     sku: data.sku?.trim() || null,
     category: data.category?.trim() || null,
     description: data.description?.trim() || null,
+    description_en: data.descriptionEn?.trim() || null,
     price_cents: Math.round(priceEur * 100),
     stock_qty: Number.isNaN(stockQty) ? 0 : Math.max(0, stockQty),
     images: Array.isArray(data.images) ? data.images : [],
