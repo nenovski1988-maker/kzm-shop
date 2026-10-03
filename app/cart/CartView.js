@@ -57,10 +57,14 @@ export default function CartView() {
                 type="button"
                 className={styles.qtyBtn}
                 onClick={() => updateQty(item.productId, item.qty + 1)}
+                disabled={item.qty >= (item.stockQty ?? Infinity)}
                 aria-label="Увеличи количеството"
               >
                 +
               </button>
+              {item.stockQty != null && item.qty >= item.stockQty && (
+                <span className={styles.stockNote}>налични {item.stockQty} бр.</span>
+              )}
             </div>
             <div className={styles.lineTotal}>{formatPriceEur(item.priceCents * item.qty)}</div>
             <button
