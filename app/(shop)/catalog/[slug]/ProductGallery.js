@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { useLanguage } from '../../lib/languageContext';
 import styles from './product.module.css';
 
 export default function ProductGallery({ images, name }) {
+  const { t } = useLanguage();
   const [active, setActive] = useState(0);
   const hasImages = images && images.length > 0;
 
@@ -14,7 +16,7 @@ export default function ProductGallery({ images, name }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img src={images[active]} alt={name} />
         ) : (
-          'няма снимка'
+          t('product.noImage')
         )}
       </div>
       {hasImages && images.length > 1 && (

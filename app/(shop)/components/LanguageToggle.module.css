@@ -1,0 +1,23 @@
+.toggle {
+  display: flex;
+  border: 1.5px solid var(--g5);
+  border-radius: 7px;
+  overflow: hidden;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.opt {
+  background: transparent;
+  border: none;
+  padding: 0.4rem 0.6rem;
+  color: var(--g3);
+  cursor: pointer;
+}
+.opt:hover { background: var(--g6); }
+
+.active {
+  background: var(--g2);
+  color: var(--w);
+}
+.active:hover { background: var(--g2); }

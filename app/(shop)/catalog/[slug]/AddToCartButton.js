@@ -2,16 +2,20 @@
 
 import { useState } from 'react';
 import { useCart } from '../../lib/cartContext';
+import { useLanguage } from '../../lib/languageContext';
 import styles from './product.module.css';
 
-export default function AddToCartButton({ product }) {
+export default function AddToCartButton({ product, name }) {
   const { addItem } = useCart();
+  const { t } = useLanguage();
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const outOfStock = product.stock_qty <= 0;
 
   function handleAdd() {
-    addItem(product, qty);
+    // Записва в количката името на езика, с който е добавено — виж бележка
+    // в cartContext: количката пази "снимка" на продукта в момента на добавяне.
+    addItem({ ...product, name: name ?? product.name }, qty);
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
   }
@@ -19,7 +23,7 @@ export default function AddToCartButton({ product }) {
   if (outOfStock) {
     return (
       <button type="button" className="btn btn-primary" disabled>
-        Изчерпан
+        {t('product.stockOut')}
       </button>
     );
   }
@@ -36,7 +40,7 @@ export default function AddToCartButton({ product }) {
           className={styles.qtyInput}
         />
         <button type="button" className="btn btn-primary" onClick={handleAdd}>
-          {added ? 'Добавено ✓' : 'Добави в количката'}
+          {added ? t('product.added') : t('product.addToCart')}
         </button>
       </div>
     </div>

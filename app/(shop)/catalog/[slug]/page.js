@@ -1,6 +1,9 @@
 import { notFound } from 'next/navigation';
 import { supabasePublic } from '../../lib/supabasePublic';
 import { formatPriceEur } from '../../components/ProductCard';
+import { t, pickText, translateCategory } from '../../lib/i18n';
+import { getLang } from '../../lib/lang';
+import { getCategoryMap } from '../../lib/categories';
 import ProductGallery from './ProductGallery';
 import AddToCartButton from './AddToCartButton';
 import styles from './product.module.css';
@@ -21,15 +24,19 @@ async function getProduct(slug) {
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
+  const lang = await getLang();
   const product = await getProduct(slug);
-  if (!product) return { title: 'Продуктът не е намерен' };
+  if (!product) return { title: t(lang, 'product.notFoundTitle') };
+
+  const name = pickText(product, 'name', lang);
+  const description = pickText(product, 'description', lang);
 
   return {
-    title: product.name,
-    description: product.description || `${product.name} — КЗМ Магазин`,
+    title: name,
+    description: description || t(lang, 'product.metaFallback')(name),
     openGraph: {
-      title: product.name,
-      description: product.description || undefined,
+      title: name,
+      description: description || undefined,
       images: product.images?.[0] ? [{ url: product.images[0] }] : undefined,
     },
   };
@@ -37,40 +44,45 @@ export async function generateMetadata({ params }) {
 
 export default async function ProductDetailPage({ params }) {
   const { slug } = await params;
-  const product = await getProduct(slug);
+  const lang = await getLang();
+  const [product, categoryMap] = await Promise.all([getProduct(slug), getCategoryMap()]);
 
   if (!product) {
     notFound();
   }
 
+  const name = pickText(product, 'name', lang);
+  const description = pickText(product, 'description', lang);
+  const category = translateCategory(product.category, lang, categoryMap);
+
   const stockLabel =
     product.stock_qty <= 0
-      ? 'Изчерпан'
+      ? t(lang, 'product.stockOut')
       : product.stock_qty <= 3
-      ? `Ограничена наличност — ${product.stock_qty} бр.`
-      : `Наличен — ${product.stock_qty} бр.`;
+      ? t(lang, 'product.stockLow')(product.stock_qty)
+      : t(lang, 'product.stockIn')(product.stock_qty);
 
   const stockClass =
     product.stock_qty <= 0 ? styles.stockOut : product.stock_qty <= 3 ? styles.stockLow : styles.stockIn;
 
   return (
     <div className={styles.wrap}>
-      <a href="/catalog" className={styles.back}>← Обратно към продуктите</a>
+      <a href="/catalog" className={styles.back}>{t(lang, 'product.back')}</a>
 
       <div className={styles.layout}>
-        <ProductGallery images={product.images} name={product.name} />
+        <ProductGallery images={product.images} name={name} />
 
         <div>
-          {product.category && <div className={styles.category}>{product.category}</div>}
-          <h1 className={styles.name}>{product.name}</h1>
-          <div className={styles.price}>{formatPriceEur(product.price_cents)}</div>
+          {category && <div className={styles.category}>{category}</div>}
+          <h1 className={styles.name}>{name}</h1>
+          <div className={styles.price}>{formatPriceEur(product.price_cents, lang)}</div>
           <div className={`${styles.stock} ${stockClass}`}>{stockLabel}</div>
 
-          {product.sku && <div className={styles.sku}>Арт. номер: {product.sku}</div>}
+          {product.sku && <div className={styles.sku}>{t(lang, 'product.skuLabel')} {product.sku}</div>}
 
-          {product.description && <p className={styles.description}>{product.description}</p>}
+          {description && <p className={styles.description}>{description}</p>}
 
-          <AddToCartButton product={product} />
+          <AddToCartButton product={product} name={name} />
         </div>
       </div>
     </div>

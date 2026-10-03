@@ -3,14 +3,16 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useCart } from '../lib/cartContext';
-import { formatPriceEur } from '../components/ProductCard';
+import { useLanguage } from '../lib/languageContext';
+import { formatPriceEur, courierLabel } from '../lib/i18n';
 import { createOrder } from './actions';
 import styles from './checkout.module.css';
 
-const COURIERS = ['Спиди', 'Еконт'];
+const COURIERS = ['Спиди', 'Еконт']; // вътрешни стойности — показваният текст се превежда (courierLabel)
 
 export default function CheckoutForm() {
   const { items, loaded, totalCents, clearCart } = useCart();
+  const { t, lang } = useLanguage();
 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -31,12 +33,12 @@ export default function CheckoutForm() {
   if (result) {
     return (
       <div className={styles.success}>
-        <h1>Поръчката е приета!</h1>
-        <p>Ще се свържем с теб на {phone} за потвърждение на доставката.</p>
-        <div className={styles.orderNumber}>Поръчка № {result.orderId.slice(0, 8)}</div>
-        <p style={{ marginTop: '1rem' }}>Обща сума: <strong>{formatPriceEur(result.totalCents)}</strong></p>
+        <h1>{t('checkout.successTitle')}</h1>
+        <p>{t('checkout.successBody')(phone)}</p>
+        <div className={styles.orderNumber}>{t('checkout.orderNumber')(result.orderId.slice(0, 8))}</div>
+        <p style={{ marginTop: '1rem' }}>{t('checkout.totalAmount')} <strong>{formatPriceEur(result.totalCents, lang)}</strong></p>
         <Link href="/catalog" className="btn btn-primary" style={{ marginTop: '1rem', display: 'inline-flex' }}>
-          Обратно към продуктите
+          {t('checkout.backToProducts')}
         </Link>
       </div>
     );
@@ -45,8 +47,8 @@ export default function CheckoutForm() {
   if (items.length === 0) {
     return (
       <div className={styles.wrap}>
-        <h1>Поръчка</h1>
-        <p>Количката е празна. <Link href="/catalog" style={{ color: 'var(--g2)', fontWeight: 700 }}>Разгледай продуктите →</Link></p>
+        <h1>{t('checkout.title')}</h1>
+        <p>{t('checkout.emptyCart')} <Link href="/catalog" style={{ color: 'var(--g2)', fontWeight: 700 }}>{t('checkout.browse')}</Link></p>
       </div>
     );
   }
@@ -58,36 +60,36 @@ export default function CheckoutForm() {
 
     try {
       const res = await createOrder(
-        { name, phone, email, deliveryMethod, courier, address, city, office, notes },
+        { name, phone, email, deliveryMethod, courier, address, city, office, notes, lang },
         items.map((i) => ({ productId: i.productId, name: i.name, priceCents: i.priceCents, qty: i.qty }))
       );
       if (!res.success) {
-        setError(res.message || 'Нещо се обърка при изпращането на поръчката.');
+        setError(res.message || t('checkout.genericError'));
         setSaving(false);
         return;
       }
       setResult(res);
       clearCart();
     } catch (err) {
-      setError('Възникна неочаквана грешка. Опитай отново.');
+      setError(t('checkout.unexpectedError'));
       setSaving(false);
     }
   }
 
   return (
     <div className={styles.wrap}>
-      <h1>Поръчка</h1>
+      <h1>{t('checkout.title')}</h1>
 
       <div className={styles.summary}>
         {items.map((i) => (
           <div key={i.productId} style={{ display: 'flex', justifyContent: 'space-between' }}>
             <span>{i.name} × {i.qty}</span>
-            <span>{formatPriceEur(i.priceCents * i.qty)}</span>
+            <span>{formatPriceEur(i.priceCents * i.qty, lang)}</span>
           </div>
         ))}
         <div className={styles.summaryTotal} style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <span>Общо:</span>
-          <span>{formatPriceEur(totalCents)}</span>
+          <span>{t('cart.total')}</span>
+          <span>{formatPriceEur(totalCents, lang)}</span>
         </div>
       </div>
 
@@ -96,22 +98,22 @@ export default function CheckoutForm() {
 
         <div className={styles.row}>
           <div className={styles.field}>
-            <label htmlFor="name">Име и фамилия *</label>
+            <label htmlFor="name">{t('checkout.fullName')}</label>
             <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} required />
           </div>
           <div className={styles.field}>
-            <label htmlFor="phone">Телефон *</label>
+            <label htmlFor="phone">{t('checkout.phone')}</label>
             <input id="phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required />
           </div>
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="email">Имейл (по желание)</label>
+          <label htmlFor="email">{t('checkout.email')}</label>
           <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
 
         <div className={styles.field}>
-          <label>Начин на доставка *</label>
+          <label>{t('checkout.deliveryMethod')}</label>
           <div className={styles.deliveryOptions}>
             <label className={`${styles.deliveryOption} ${deliveryMethod === 'courier' ? styles.deliveryOptionActive : ''}`}>
               <input
@@ -121,7 +123,7 @@ export default function CheckoutForm() {
                 checked={deliveryMethod === 'courier'}
                 onChange={() => setDeliveryMethod('courier')}
               />
-              До адрес
+              {t('checkout.toAddress')}
             </label>
             <label className={`${styles.deliveryOption} ${deliveryMethod === 'pickup' ? styles.deliveryOptionActive : ''}`}>
               <input
@@ -131,16 +133,16 @@ export default function CheckoutForm() {
                 checked={deliveryMethod === 'pickup'}
                 onChange={() => setDeliveryMethod('pickup')}
               />
-              До офис на куриер
+              {t('checkout.toOffice')}
             </label>
           </div>
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="courier">Куриер</label>
+          <label htmlFor="courier">{t('checkout.courier')}</label>
           <select id="courier" value={courier} onChange={(e) => setCourier(e.target.value)}>
             {COURIERS.map((c) => (
-              <option key={c} value={c}>{c}</option>
+              <option key={c} value={c}>{courierLabel(c, lang)}</option>
             ))}
           </select>
         </div>
@@ -148,40 +150,40 @@ export default function CheckoutForm() {
         {deliveryMethod === 'courier' ? (
           <div className={styles.row}>
             <div className={styles.field}>
-              <label htmlFor="city">Град *</label>
+              <label htmlFor="city">{t('checkout.city')}</label>
               <input id="city" type="text" value={city} onChange={(e) => setCity(e.target.value)} required />
             </div>
             <div className={styles.field}>
-              <label htmlFor="address">Адрес *</label>
+              <label htmlFor="address">{t('checkout.address')}</label>
               <input id="address" type="text" value={address} onChange={(e) => setAddress(e.target.value)} required />
             </div>
           </div>
         ) : (
           <div className={styles.field}>
-            <label htmlFor="office">Офис на куриера *</label>
+            <label htmlFor="office">{t('checkout.office')}</label>
             <input
               id="office"
               type="text"
               value={office}
               onChange={(e) => setOffice(e.target.value)}
-              placeholder="Напр. офис Габрово, ул. ..."
+              placeholder={t('checkout.officePlaceholder')}
               required
             />
           </div>
         )}
 
         <div className={styles.field}>
-          <label htmlFor="notes">Бележка към поръчката (по желание)</label>
+          <label htmlFor="notes">{t('checkout.notes')}</label>
           <textarea id="notes" rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} />
         </div>
 
         <div className={styles.field}>
-          <label>Плащане</label>
-          <div style={{ fontSize: '0.88rem', color: 'var(--g3)' }}>Наложен платеж (плащане при доставка)</div>
+          <label>{t('checkout.payment')}</label>
+          <div style={{ fontSize: '0.88rem', color: 'var(--g3)' }}>{t('checkout.cod')}</div>
         </div>
 
         <button type="submit" className="btn btn-primary" disabled={saving}>
-          {saving ? 'Изпращане…' : `Завърши поръчката — ${formatPriceEur(totalCents)}`}
+          {saving ? t('checkout.sending') : t('checkout.submit')(formatPriceEur(totalCents, lang))}
         </button>
       </form>
     </div>

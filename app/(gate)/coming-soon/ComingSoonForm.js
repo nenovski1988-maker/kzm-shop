@@ -2,10 +2,11 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { t } from '../../(shop)/lib/i18n';
 import { verifyPin } from './actions';
 import styles from './coming-soon.module.css';
 
-export default function ComingSoonForm() {
+export default function ComingSoonForm({ lang }) {
   const router = useRouter();
   const [pin, setPin] = useState('');
   const [checking, setChecking] = useState(false);
@@ -19,7 +20,7 @@ export default function ComingSoonForm() {
     try {
       const res = await verifyPin(pin);
       if (!res.success) {
-        setError(res.message || 'Грешен код.');
+        setError(res.message || t(lang, 'comingSoon.wrongCode'));
         setChecking(false);
         return;
       }
@@ -27,14 +28,14 @@ export default function ComingSoonForm() {
       router.refresh();
     } catch (err) {
       console.error('[coming-soon] грешка при проверка на кода:', err);
-      setError('Възникна грешка. Опитай отново.');
+      setError(t(lang, 'comingSoon.error'));
       setChecking(false);
     }
   }
 
   return (
     <form className={styles.pinForm} onSubmit={handleSubmit}>
-      <label htmlFor="pin" className="visually-hidden">Код за достъп</label>
+      <label htmlFor="pin" className="visually-hidden">{t(lang, 'comingSoon.pinLabel')}</label>
       <input
         id="pin"
         type="text"
@@ -48,7 +49,7 @@ export default function ComingSoonForm() {
         autoComplete="off"
       />
       <button type="submit" className="btn btn-primary" disabled={checking || pin.length === 0}>
-        {checking ? 'Проверка…' : 'Вход'}
+        {checking ? t(lang, 'comingSoon.checking') : t(lang, 'comingSoon.submit')}
       </button>
       {error && <div className={styles.error}>{error}</div>}
     </form>
