@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import AdminNav from './AdminNav';
 import styles from './admin.module.css';
 
@@ -13,7 +14,7 @@ export default function AdminLayout({ children }) {
           <h1>Админ панел</h1>
           <div style={{ fontSize: '0.8rem', color: 'var(--g3)' }}>КЗМ Магазин</div>
         </div>
-        <a href="/" className="btn btn-ghost">← Към витрината</a>
+        <Link href="/" className="btn btn-ghost">← Към витрината</Link>
       </div>
       <AdminNav />
       {children}

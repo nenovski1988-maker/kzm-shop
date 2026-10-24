@@ -33,7 +33,7 @@ body {
   /* Бледо зелено лого-водно знак на фона на всяка страница — прозрачността
      е вече вградена в самия файл (public/logo-watermark.png), не е CSS
      opacity, за да не избледнява и съдържанието над него. */
-  background-image: url('/logo-watermark.png');
+  background-image: url('/store/logo-watermark.png');
   background-repeat: no-repeat;
   background-position: center 10%;
   background-size: min(480px, 70vw);

@@ -21,7 +21,7 @@ export async function generateMetadata() {
   const lang = await getLang();
   const isEn = lang === 'en';
   return {
-    metadataBase: new URL('https://shop.kzm.bg'),
+    metadataBase: new URL('https://kzm.bg'),
     title: {
       default: isEn ? 'KZM Shop — hoof health products' : 'Магазин КЗМ — продукти за копитно здраве',
       template: isEn ? '%s — KZM Shop' : '%s — Магазин КЗМ',

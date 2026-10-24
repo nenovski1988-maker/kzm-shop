@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { supabasePublic } from '../lib/supabasePublic';
 import ProductCard from '../components/ProductCard';
 import { t, translateCategory } from '../lib/i18n';
@@ -49,20 +50,20 @@ export default async function CatalogPage({ searchParams }) {
 
       {categories.length > 0 && (
         <div className={styles.filters}>
-          <a href="/catalog" className={`${styles.filterLink} ${!category ? styles.filterActive : ''}`}>
+          <Link href="/catalog" className={`${styles.filterLink} ${!category ? styles.filterActive : ''}`}>
             {t(lang, 'catalog.all')}
-          </a>
+          </Link>
           {categories.map((cat) => (
             // href пази оригиналната (BG) категория — така филтрирането по
             // products.category работи независимо от избрания език; само
             // показваният текст се превежда.
-            <a
+            <Link
               key={cat}
               href={`/catalog?category=${encodeURIComponent(cat)}`}
               className={`${styles.filterLink} ${category === cat ? styles.filterActive : ''}`}
             >
               {translateCategory(cat, lang, categoryMap)}
-            </a>
+            </Link>
           ))}
         </div>
       )}

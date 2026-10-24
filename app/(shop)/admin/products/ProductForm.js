@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { uploadFilesToCloudinary } from '../../lib/cloudinary-client';
 import { slugify } from '../../lib/slugify';
 import { createProduct, updateProduct, deleteProduct } from './actions';
@@ -223,7 +224,7 @@ export default function ProductForm({ product }) {
         <button type="submit" className="btn btn-primary" disabled={saving || uploading}>
           {saving ? 'Записване…' : isEdit ? 'Запази промените' : 'Създай продукт'}
         </button>
-        <a href="/admin/products" className="btn btn-ghost">Отказ</a>
+        <Link href="/admin/products" className="btn btn-ghost">Отказ</Link>
         {isEdit && (
           <button type="button" className={styles.deleteLink} onClick={handleDelete} disabled={saving}>
             Изтрий продукта

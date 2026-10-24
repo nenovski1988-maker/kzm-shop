@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 import { supabasePublic } from '../../lib/supabasePublic';
 import { formatPriceEur } from '../../components/ProductCard';
 import { t, pickText, translateCategory } from '../../lib/i18n';
@@ -67,7 +68,7 @@ export default async function ProductDetailPage({ params }) {
 
   return (
     <div className={styles.wrap}>
-      <a href="/catalog" className={styles.back}>{t(lang, 'product.back')}</a>
+      <Link href="/catalog" className={styles.back}>{t(lang, 'product.back')}</Link>
 
       <div className={styles.layout}>
         <ProductGallery images={product.images} name={name} />
