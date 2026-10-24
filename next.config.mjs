@@ -2,14 +2,9 @@ const isDev = process.env.NODE_ENV !== 'production';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Магазинът вече не живее на отделен поддомейн (shop.kzm.bg), а като
-  // секция от kzm.bg — kzm.bg/store — проксирана от Netlify (_redirects
-  // в kzm-site). basePath premества цялото приложение под /store: Next.js
-  // автоматично го добавя към next/link, next/image, headers/rewrites и
-  // proxy.js matcher-ите, НО не и към buквални низове като href="/x",
-  // src="/x" или CSS url('/x') — затова такива места (Footer, globals.css,
-  // coming-soon) пазят "/store" ръчно вградено в пътя.
-  basePath: '/store',
+  // Магазинът живее на собствен поддомейн — shop.kzm.bg (Vercel), отделно
+  // от главния статичен kzm.bg (Netlify). Няма basePath — приложението е
+  // на корен адрес ("/"), какъвто е по подразбиране.
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'res.cloudinary.com' },

@@ -22,7 +22,7 @@ export default function Footer({ lang }) {
         className={styles.credit}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        {t(lang, 'footer.madeBy')} <img src="/store/hrum-logo.png" alt="HRUM STUDIO" />
+        {t(lang, 'footer.madeBy')} <img src="/hrum-logo.png" alt="HRUM STUDIO" />
       </a>
     </footer>
   );

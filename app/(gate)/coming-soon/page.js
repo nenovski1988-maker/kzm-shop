@@ -29,7 +29,7 @@ export default async function ComingSoonPage() {
     <div className={styles.wrap}>
       <div className={styles.card}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/store/logo.png" alt="КЗМ" className={styles.logo} />
+        <img src="/logo.png" alt="КЗМ" className={styles.logo} />
         <h1>{t(lang, 'comingSoon.title')}</h1>
         <p className={styles.lead}>{t(lang, 'comingSoon.lead')}</p>
         <ComingSoonForm lang={lang} />
